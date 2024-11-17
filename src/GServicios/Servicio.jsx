@@ -1,9 +1,13 @@
-import axios from "axios";
+
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { newServicio, obtenerServicio } from "../Services/ServicioService";
 import { obtenerClientesForCombo } from "../Services/ClienteService";
 import { obtenerTiposServiciosForCombo } from "../Services/TipoServicioService";
+import PropTypes from 'prop-types';
+MyComponent.propTypes = {
+  title: PropTypes.string.isRequired,
+};
 
 export default function Servicio({ title }) {
   let navegacion = useNavigate();
@@ -40,15 +44,15 @@ export default function Servicio({ title }) {
     setTotal(nuevoTotal);
   }, [servicios]);
 
-  const cargarModel2 = async () => {
-    if (id > 0) {
-      const resultado = await obtenerServicio(id);
-      setServicio(resultado);
-      setSelectedCliente(resultado.cliente.id); // Establecer el cliente seleccionado
-      setFecha(new Date(resultado.fechaDocumento).toISOString().split("T")[0]); // Establecer la fecha
-      setServicios(resultado.listaItems); // Establecer los item servicios cargados
-    }
-  };
+  // const cargarModel2 = async () => {
+  //   if (id > 0) {
+  //     const resultado = await obtenerServicio(id);
+  //     setServicio(resultado);
+  //     setSelectedCliente(resultado.cliente.id); // Establecer el cliente seleccionado
+  //     setFecha(new Date(resultado.fechaDocumento).toISOString().split("T")[0]); // Establecer la fecha
+  //     setServicios(resultado.listaItems); // Establecer los item servicios cargados
+  //   }
+  // };
   const cargarModel = async () => {
     if (id > 0) {
       const resultado = await obtenerServicio(id);

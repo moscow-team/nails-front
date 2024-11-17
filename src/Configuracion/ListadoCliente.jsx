@@ -1,7 +1,6 @@
-import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { ITEMS_PER_PAGE, API_URL } from "../App.config";
+import { Link,  } from "react-router-dom";
+import { ITEMS_PER_PAGE } from "../App.config";
 import { ClienteContext } from "./ClienteContext";
 import { obtenerClientes, eliminarCliente } from "../Services/ClienteService";
 
