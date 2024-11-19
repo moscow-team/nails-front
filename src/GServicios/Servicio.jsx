@@ -23,7 +23,7 @@ export default function Servicio({ title }) {
   const [tiposServicio, setTiposServicio] = useState([]);
   const [servicios, setServicios] = useState([]);
   const [total, setTotal] = useState(0); // Estado para el total
-  const [errors, setErrors] = useState({
+  const [errores, setErrores] = useState({
     fecha: "",
     cliente: "",
     servicios: Array(servicios.length).fill({ tipoServicio: "", precio: "" }),
@@ -117,23 +117,23 @@ export default function Servicio({ title }) {
     const fechaActual = new Date().toISOString().split("T")[0];
 
     if (fecha > fechaActual) {
-      setErrors((prevErrors) => ({
+      setErrores((prevErrors) => ({
         ...prevErrors,
         fecha: "La fecha no puede ser mayor a la actual",
       }));
       return;
     } else {
-      setErrors((prevErrors) => ({ ...prevErrors, fecha: "" }));
+      setErrores((prevErrors) => ({ ...prevErrors, fecha: "" }));
     }
 
     if (!selectedCliente) {
-      setErrors((prevErrors) => ({
+      setErrores((prevErrors) => ({
         ...prevErrors,
         cliente: "Debe seleccionar un cliente",
       }));
       return;
     } else {
-      setErrors((prevErrors) => ({ ...prevErrors, cliente: "" }));
+      setErrores((prevErrors) => ({ ...prevErrors, cliente: "" }));
     }
 
     const newServiciosErrors = servicios.map((item) => {
@@ -145,13 +145,13 @@ export default function Servicio({ title }) {
     });
 
     if (newServiciosErrors.some((item) => Object.keys(item).length !== 0)) {
-      setErrors((prevErrors) => ({
+      setErrores((prevErrors) => ({
         ...prevErrors,
         servicios: newServiciosErrors,
       }));
       return;
     } else {
-      setErrors((prevErrors) => ({
+      setErrores((prevErrors) => ({
         ...prevErrors,
         servicios: Array(servicios.length).fill({
           tipoServicio: "",
@@ -201,7 +201,7 @@ export default function Servicio({ title }) {
               ))}
             </select>
 
-            {errors.cliente && <div className="error">{errors.cliente}</div>}
+            {errores.cliente && <div className="error">{errores.cliente}</div>}
           </div>
 
           <div>
@@ -213,7 +213,7 @@ export default function Servicio({ title }) {
               value={fecha}
               onChange={(e) => setFecha(e.target.value)}
             />
-            {errors.fecha && <div className="error">{errors.fecha}</div>}
+            {errores.fecha && <div className="error">{errores.fecha}</div>}
           </div>
         </div>
 
@@ -242,9 +242,9 @@ export default function Servicio({ title }) {
                 </option> // El value es el ID
               ))}
             </select>
-            {errors.servicios[index]?.tipoServicio && (
+            {errores.servicios[index]?.tipoServicio && (
               <div className="error">
-                {errors.servicios[index].tipoServicio}
+                {errores.servicios[index].tipoServicio}
               </div>
             )}
 
@@ -255,8 +255,8 @@ export default function Servicio({ title }) {
               value={servicio.precio}
               onChange={(e) => handleServicioChange(index, e)}
             />
-            {errors.servicios[index]?.precio && (
-              <div className="error">{errors.servicios[index].precio}</div>
+            {errores.servicios[index]?.precio && (
+              <div className="error">{errores.servicios[index].precio}</div>
             )}
 
             <label>Observaciones:</label>

@@ -45,28 +45,23 @@ export async function newArticuloVenta(model) {
         data: model,
       });
     }
-
     return data;
-  } catch (e) {
-    //  console.error(e);
-    // if (e.response && e.response.status === 400) {
-    //     //setMensaje('Error: Los datos proporcionados son inválidos');
-    //     alert('Error: Los datos proporcionados son inválidos');
-    // }
-    // else {
-    //     alert(e.response);
-    //     alert(e.response.status);
-    //     // setMensaje('Error al conectarse con el servidor');
-    // }
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }
 
 export async function eliminarArticulosVenta(id) {
   const urlBase = API_URL + "/articulosEliminar";
-  const { data } = await axios({
-    method: "PUT",
-    url: `${urlBase}/${id}`,
-  });
-  return true;
+  try {
+    const { data } = await axios({
+      method: "PUT",
+      url: `${urlBase}/${id}`,
+    });
+    return true;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 }

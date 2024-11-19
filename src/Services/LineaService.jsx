@@ -30,12 +30,10 @@ export async function obtenerLineas2() {
 
 export async function obtenerLinea(id) {
   try {
-    // `${urlBase}/${id}`
     const { data } = await axios({
       method: "GET",
       url: `${API_URL}/linea/${id}`,
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error en buscar una linea:", error);
@@ -60,26 +58,21 @@ export async function newLinea(linea) {
     }
 
     return data;
-  } catch (e) {
-    //  console.error(e);
-    // if (e.response && e.response.status === 400) {
-    //     //setMensaje('Error: Los datos proporcionados son inválidos');
-    //     alert('Error: Los datos proporcionados son inválidos');
-    // }
-    // else {
-    //     alert(e.response);
-    //     alert(e.response.status);
-    //     // setMensaje('Error al conectarse con el servidor');
-    // }
+  } catch (error) {
+    console.error(error);
     return null;
   }
 }
 
 export async function eliminarLineas(id) {
   const urlBase = API_URL + "/lineaEliminar";
-  const { data } = await axios({
-    method: "PUT",
-    url: `${urlBase}/${id}`,
-  });
-  return true;
+  try {
+    const { data } = await axios({
+      method: "PUT",
+      url: `${urlBase}/${id}`,
+    });
+    return true;
+  } catch (error) {
+    console.error(error);
+  }
 }

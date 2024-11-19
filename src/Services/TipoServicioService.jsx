@@ -59,8 +59,8 @@ export async function newTipoServicio(tipoServicio) {
     }
 
     return data;
-  } catch (e) {
-    //  console.error(e);
+  } catch (error) {
+     console.error(error);
     // if (e.response && e.response.status === 400) {
     //     //setMensaje('Error: Los datos proporcionados son inválidos');
     //     alert('Error: Los datos proporcionados son inválidos');
@@ -76,9 +76,14 @@ export async function newTipoServicio(tipoServicio) {
 
 export async function eliminarTipoServicio(id) {
   const urlBase = API_URL + "/tipoServicioEliminar";
-  const { data } = await axios({
-    method: "PUT",
-    url: `${urlBase}/${id}`,
-  });
-  return true;
+  try {
+    const { data } = await axios({
+      method: "PUT",
+      url: `${urlBase}/${id}`,
+    });
+    return true;
+  } catch (error) {
+    console.error("Error eliminando tipo de servicio:", error);
+    throw error;
+  }
 }
