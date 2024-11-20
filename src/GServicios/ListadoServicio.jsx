@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../app.config.js";
 import { ServicioContext } from "./ServicioContext";
 import {
-  eliminarServicio,
+  // eliminarServicio,
   obtenerServicios,
 } from "../Services/ServicioService";
 import { FormatearFecha } from "../utils/FormateadorDeFecha";
@@ -49,18 +49,21 @@ export default function ListadoServicio() {
     setConsulta(e.target.value);
   };
 
-  const eliminar = async (id) => {
+  const eliminar = async () => {
     if (window.confirm("¿Estás seguro de que deseas eliminar este servicio?")) {
-      try {
-        const eliminacionExitosa = await eliminarServicio(id);
-        if (eliminacionExitosa) {
-          obtenerDatos();
-        } else {
-          console.error("Error al eliminar servicio");
-        }
-      } catch (error) {
-        console.error("Error al eliminar la línea:", error);
-      }
+
+      //TODO - Implementar la eliminación del servicio
+      alert("No se puede eliminar el servicio");
+      // try {
+      //   const eliminacionExitosa = await eliminarServicio(id);
+      //   if (eliminacionExitosa) {
+      //     obtenerDatos();
+      //   } else {
+      //     console.error("Error al eliminar servicio");
+      //   }
+      // } catch (error) {
+      //   console.error("Error al eliminar la línea:", error);
+      // }
     }
   };
 

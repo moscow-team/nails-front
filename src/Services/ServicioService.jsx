@@ -10,7 +10,6 @@ export async function obtenerServicios(consulta, page, tamañoPagina) {
       method: "GET",
       url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error buscando servicios:", error);
@@ -34,6 +33,7 @@ export async function obtenerServicio(id) {
 
 // Crear o actualizar un servicio
 export async function nuevoServicio(servicio) {
+  console.log(servicio);
   try {
     if (servicio.id > 0) {
       const { data } = await axios({
@@ -60,7 +60,7 @@ export async function nuevoServicio(servicio) {
 export async function eliminarServicio(id) {
   try {
     const { data } = await axios({
-      method: "PUT",
+      method: "DELETE",
       url: `${API_URL}/servicioEliminar/${id}`,
     });
     return data;
