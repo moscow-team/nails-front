@@ -35,12 +35,12 @@ export default function Cliente({ title }) {
     }
   };
 
-  const onInputChange = ({ target: { name, value } }) => {
+  const cambiarFormulario = ({ target: { name, value } }) => {
     //spread operator ... (expandir los atributos)
     setCliente({ ...cliente, [name]: value });
   };
 
-  const onSubmit = async (e) => {
+  const registrar = async (e) => {
     e.preventDefault();
     const urlBase = "http://localhost:8080/nails/clientes";
     if (id > 0) {
@@ -59,7 +59,7 @@ export default function Cliente({ title }) {
         <hr></hr>
       </div>
 
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={(e) => registrar(e)}>
         <div className="mb-3">
           <label htmlFor="razonSocial" className="form-label">
             {" "}
@@ -72,7 +72,7 @@ export default function Cliente({ title }) {
             name="razonSocial"
             required={true}
             value={razonSocial}
-            onChange={(e) => onInputChange(e)}
+            onChange={(e) => cambiarFormulario(e)}
           />
         </div>
 
@@ -88,7 +88,7 @@ export default function Cliente({ title }) {
             name="celular"
             required={true}
             value={celular}
-            onChange={(e) => onInputChange(e)}
+            onChange={(e) => cambiarFormulario(e)}
           />
         </div>
 
@@ -103,7 +103,7 @@ export default function Cliente({ title }) {
             id="mail"
             name="mail"
             value={mail}
-            onChange={(e) => onInputChange(e)}
+            onChange={(e) => cambiarFormulario(e)}
           />
         </div>
 

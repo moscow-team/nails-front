@@ -11,36 +11,34 @@ import {
 export default function ListadoTipoServicio() {
   const { tiposServicios, setTiposServicios } = useContext(TipoServicioContext);
   const [consulta, setConsulta] = useState("");
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
-  const [totalPages, setTotalPages] = useState(0);
-  const [sortConfig, setSortConfig] = useState({
+  const [pagina, setPagina] = useState(0);
+  const [tamañoPagina, setTamañoPagina] = useState(ITEMS_PER_PAGE);
+  const [totalPaginas, setTotalPaginas] = useState(0);
+  const [configuracion, setConfiguracion] = useState({
     key: null,
     direction: "ascending",
   }); //se utiliza para el orden
 
   useEffect(() => {
-    console.log("entro ");
-    getDatos();
-  }, [page, pageSize, consulta]);
+    obtenerDatos();
+  }, [pagina, tamañoPagina, consulta]);
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
+  const cambiarPagina = (newPage) => {
+    setPagina(newPage);
   };
 
-  const getDatos = async () => {
-    console.log("carga " + page);
-    obtenerTiposServicios(consulta, page, pageSize)
+  const obtenerDatos = async () => {
+    obtenerTiposServicios(consulta, pagina, tamañoPagina)
       .then((response) => {
         setTiposServicios(response.content);
-        setTotalPages(response.totalPages);
+        totalPaginas(response.totalPaginas);
       })
       .catch((error) => {
         console.error("Error fetching items:", error);
       });
   };
 
-  const handConsultaChange = (e) => {
+  const cambiarConsulta = (e) => {
     setConsulta(e.target.value);
   };
 
@@ -48,7 +46,7 @@ export default function ListadoTipoServicio() {
     try {
       const eliminacionExitosa = await eliminarTipoServicio(id);
       if (eliminacionExitosa) {
-        getDatos();
+        obtenerDatos();
       } else {
         console.error("Error al eliminar el tipo servicio");
       }
@@ -58,23 +56,23 @@ export default function ListadoTipoServicio() {
   };
 
   ///////////////////////////////////////Para el orden de las tablas///////////////////////////////////////////////////
-  const handleSort = (key) => {
+  const filtrar = (key) => {
     let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+    if (configuracion.key === key && configuracion.direction === "ascending") {
       direction = "descending";
     }
-    setSortConfig({ key, direction });
+    setConfiguracion({ key, direction });
   };
 
-  const sortedData = () => {
+  const listadoFiltrado = () => {
     const sorted = [...tiposServicios];
-    if (sortConfig.key !== null) {
+    if (configuracion.key !== null) {
       sorted.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
+        if (a[configuracion.key] < b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
+        if (a[configuracion.key] > b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
@@ -100,12 +98,12 @@ export default function ListadoTipoServicio() {
             type="search"
             aria-label="Search"
             value={consulta}
-            onChange={handConsultaChange}
+            onChange={cambiarConsulta}
           ></input>
         </div>
         <div className="col-1">
           <button
-            onClick={() => getDatos()}
+            onClick={() => obtenerDatos()}
             className="btn btn-outline-success"
             type="submit"
           >
@@ -117,19 +115,19 @@ export default function ListadoTipoServicio() {
       <table className="table table-striped table-hover align-middle">
         <thead className="table-dark text-center">
           <tr>
-            <th scope="col" onClick={() => handleSort("id")}>
+            <th scope="col" onClick={() => filtrar("id")}>
               #
-              {sortConfig.key === "id" && (
+              {configuracion.key === "id" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
-            <th scope="col" onClick={() => handleSort("denominacion")}>
+            <th scope="col" onClick={() => filtrar("denominacion")}>
               Denominación
-              {sortConfig.key === "denominacion" && (
+              {configuracion.key === "denominacion" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
@@ -140,7 +138,7 @@ export default function ListadoTipoServicio() {
         <tbody>
           {
             //iteramos empleados
-            sortedData().map((tipoServicio, indice) => (
+            listadoFiltrado().map((tipoServicio, indice) => (
               <tr key={indice}>
                 <th scope="row">{tipoServicio.id}</th>
                 <td>{tipoServicio.denominacion}</td>
@@ -193,16 +191,16 @@ export default function ListadoTipoServicio() {
       {/* /////////////////////// Esto se utiliza para hacer la paginacion  ///////////////////////////////// */}
 
       <div className="pagination d-md-flex justify-content-md-end">
-        {Array.from({ length: totalPages }, (_, i) => i).map((pageNumber) => (
+        {Array.from({ length: totalPaginas }, (_, i) => i).map((numero) => (
           <a
-            key={pageNumber}
+            key={numero}
             href="#"
             onClick={(e) => {
               e.preventDefault(); // Previene el comportamiento predeterminado del enlace
-              handlePageChange(pageNumber);
+              cambiarPagina(numero);
             }}
           >
-            | {pageNumber} |
+            | {numero} |
           </a>
         ))}
       </div>

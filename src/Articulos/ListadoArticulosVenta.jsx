@@ -14,35 +14,34 @@ export default function ListadoArticulosVenta() {
   const [consulta, setConsulta] = useState("");
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
-  const [totalPages, setTotalPages] = useState(0);
+  const [tamañoPagina, setTamañoPagina] = useState(ITEMS_PER_PAGE);
+  const [totalPaginas, setTotalPaginas] = useState(0);
 
-  const [sortConfig, setSortConfig] = useState({
+  const [configuracion, setConfiguracion] = useState({
     key: null,
     direction: "ascending",
   }); //se utiliza para el orden
 
   useEffect(() => {
-    getDatos();
-  }, [page, pageSize, consulta]);
+    obtenerDatos();
+  }, [page, tamañoPagina, consulta]);
 
-  const handlePageChange = (newPage) => {
+  const cambiarPagina = (newPage) => {
     setPage(newPage);
   };
 
-  const getDatos = async () => {
-    console.log("carga " + page);
-    obtenerArticulosVenta(consulta, page, pageSize)
+  const obtenerDatos = async () => {
+    obtenerArticulosVenta(consulta, page, tamañoPagina)
       .then((response) => {
         setArticulos(response.content);
-        setTotalPages(response.totalPages);
+        setTotalPaginas(response.totalPaginas);
       })
       .catch((error) => {
         console.error("Error fetching items:", error);
       });
   };
 
-  const handConsultaChange = (e) => {
+  const cambiarConsulta = (e) => {
     setConsulta(e.target.value);
   };
 
@@ -50,7 +49,7 @@ export default function ListadoArticulosVenta() {
     try {
       const eliminacionExitosa = await eliminarArticulosVenta(id);
       if (eliminacionExitosa) {
-        getDatos();
+        obtenerDatos();
       } else {
         console.error("Error al eliminar el articulo");
       }
@@ -61,23 +60,23 @@ export default function ListadoArticulosVenta() {
 
   ///////////////////////////////////////Para el orden de las tablas///////////////////////////////////////////////////
 
-  const handleSort = (key) => {
+  const filtrar = (key) => {
     let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+    if (configuracion.key === key && configuracion.direction === "ascending") {
       direction = "descending";
     }
-    setSortConfig({ key, direction });
+    setConfiguracion({ key, direction });
   };
 
-  const sortedData = () => {
+  const listadoFiltrado = () => {
     const sorted = [...articulos];
-    if (sortConfig.key !== null) {
+    if (configuracion.key !== null) {
       sorted.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
+        if (a[configuracion.key] < b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
+        if (a[configuracion.key] > b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
@@ -103,12 +102,12 @@ export default function ListadoArticulosVenta() {
             type="search"
             aria-label="Search"
             value={consulta}
-            onChange={handConsultaChange}
+            onChange={cambiarConsulta}
           ></input>
         </div>
         <div className="col-1">
           <button
-            onClick={() => getDatos()}
+            onClick={() => obtenerDatos()}
             className="btn btn-outline-success"
             type="submit"
           >
@@ -120,19 +119,19 @@ export default function ListadoArticulosVenta() {
       <table className="table table-striped table-hover align-middle">
         <thead className="table-dark">
           <tr>
-            <th scope="col" onClick={() => handleSort("id")}>
+            <th scope="col" onClick={() => filtrar("id")}>
               #
-              {sortConfig.key === "id" && (
+              {configuracion.key === "id" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
-            <th scope="col" onClick={() => handleSort("denominacion")}>
+            <th scope="col" onClick={() => filtrar("denominacion")}>
               Denominación
-              {sortConfig.key === "denominacion" && (
+              {configuracion.key === "denominacion" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
@@ -143,7 +142,7 @@ export default function ListadoArticulosVenta() {
         <tbody>
           {
             //iteramos empleados
-            sortedData().map((articulo, indice) => (
+            listadoFiltrado().map((articulo, indice) => (
               <tr key={indice}>
                 <th scope="row">{articulo.id}</th>
                 <td>{articulo.denominacion}</td>
@@ -196,13 +195,13 @@ export default function ListadoArticulosVenta() {
       {/* /////////////////////// Esto se utiliza para hacer la paginacion  ///////////////////////////////// */}
 
       <div className="pagination d-md-flex justify-content-md-end">
-        {Array.from({ length: totalPages }, (_, i) => i).map((pageNumber) => (
+        {Array.from({ length: totalPaginas }, (_, i) => i).map((pageNumber) => (
           <a
             key={pageNumber}
             href="#"
             onClick={(e) => {
               e.preventDefault(); // Previene el comportamiento predeterminado del enlace
-              handlePageChange(pageNumber);
+              cambiarPagina(pageNumber);
             }}
           >
             | {pageNumber} |

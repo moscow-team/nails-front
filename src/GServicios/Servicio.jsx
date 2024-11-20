@@ -16,7 +16,6 @@ export default function Servicio({ title }) {
   const [servicio, setServicio] = useState({
     denominacion: "",
   });
-
   const [listaClientes, setListaClientes] = useState([]);
   const [selectedCliente, setSelectedCliente] = useState("");
   //TODO: VERIFICAR EL FORMATO DE LA FECHA
@@ -74,14 +73,14 @@ export default function Servicio({ title }) {
     setTiposServicio(resultado);
   };
 
-  const handleAddServicio = () => {
+  const agregarServicio = () => {
     setServicios([
       ...servicios,
       { tipoServicio: "", precio: "", observaciones: "" },
     ]);
   };
 
-  const handleRemoveServicio = (index) => {
+  const removerServicio = (index) => {
     const newServicios = [...servicios];
     newServicios.splice(index, 1);
     setServicios(newServicios);
@@ -94,7 +93,7 @@ export default function Servicio({ title }) {
   //   setServicios(newServicios);
   // };
 
-  const handleServicioChange = (index, event) => {
+  const cambiarServicio = (index, event) => {
     const { name, value } = event.target;
     const newServicios = [...servicios];
 
@@ -113,7 +112,7 @@ export default function Servicio({ title }) {
     setServicios(newServicios);
   };
 
-  const onSubmit = async (e) => {
+  const registrar = async (e) => {
     e.preventDefault();
     const fechaActual = new Date().toISOString().split("T")[0];
 
@@ -182,7 +181,7 @@ export default function Servicio({ title }) {
         <hr />
       </div>
 
-      <form onSubmit={onSubmit}>
+      <form onSubmit={registrar}>
         <div className="mb-3">
           <div>
             <label htmlFor="listaClientes">Selecciona un cliente: </label>
@@ -234,7 +233,7 @@ export default function Servicio({ title }) {
             <select
               name="tipoServicio"
               value={servicio.tipoServicioId || ""} // Aquí usas tipoServicioId
-              onChange={(e) => handleServicioChange(index, e)}
+              onChange={(e) => cambiarServicio(index, e)}
             >
               <option value="">Seleccione un tipo de servicio</option>
               {tiposServicio.map((tipo) => (
@@ -255,7 +254,7 @@ export default function Servicio({ title }) {
               name="precio"
               // value={servicio.precio}
               value={FormetearPrecio(servicio.precio)} // Formateas el precio
-              onChange={(e) => handleServicioChange(index, e)}
+              onChange={(e) => cambiarServicio(index, e)}
             />
             {errores.servicios[index]?.precio && (
               <div className="error">{errores.servicios[index].precio}</div>
@@ -266,15 +265,15 @@ export default function Servicio({ title }) {
               type="text"
               name="observaciones"
               value={servicio.observaciones}
-              onChange={(e) => handleServicioChange(index, e)}
+              onChange={(e) => cambiarServicio(index, e)}
             />
-            <button type="button" onClick={() => handleRemoveServicio(index)}>
+            <button type="button" onClick={() => removerServicio(index)}>
               Eliminar
             </button>
           </div>
         ))}
 
-        <button type="button" onClick={handleAddServicio}>
+        <button type="button" onClick={agregarServicio}>
           Agregar Servicio
         </button>
 

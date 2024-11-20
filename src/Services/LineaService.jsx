@@ -1,12 +1,12 @@
 import axios from "axios";
 import { API_URL } from "../App.config";
 
-export async function obtenerLineas(consulta, page, pageSize) {
+export async function obtenerLineasPorPagina(consulta, page, tamañoPagina) {
   const urlBase = API_URL + "/lineasPageQuery";
   try {
     const { data } = await axios({
       method: "GET",
-      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${pageSize}`,
+      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
     return data;
   } catch (error) {
@@ -15,7 +15,7 @@ export async function obtenerLineas(consulta, page, pageSize) {
   }
 }
 
-export async function obtenerLineas2() {
+export async function obtenerLineas() {
   try {
     const { data } = await axios({
       method: "GET",
@@ -41,7 +41,7 @@ export async function obtenerLinea(id) {
   }
 }
 
-export async function newLinea(linea) {
+export async function nuevaLinea(linea) {
   try {
     if (linea.id > 0) {
       const { data } = await axios({

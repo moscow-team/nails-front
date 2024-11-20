@@ -1,12 +1,12 @@
 import axios from "axios";
 import { API_URL } from "../App.config";
 
-export async function obtenerTiposServicios(consulta, page, pageSize) {
+export async function obtenerTiposServiciosPorPagina(consulta, page, tamañoPagina) {
   try {
     const urlBase = API_URL + "/tiposServiciosPageQuery";
     const { data } = await axios({
       method: "GET",
-      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${pageSize}`,
+      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
     return data;
   } catch (error) {
@@ -15,7 +15,7 @@ export async function obtenerTiposServicios(consulta, page, pageSize) {
   }
 }
 
-export async function obtenerTiposServiciosForCombo() {
+export async function obtenerTiposServicios() {
   try {
     const urlBase = API_URL + "/tiposServicios";
     const { data } = await axios({
@@ -42,7 +42,7 @@ export async function obtenerTipoServicio(id) {
   }
 }
 
-export async function newTipoServicio(tipoServicio) {
+export async function nuevoTipoServicio(tipoServicio) {
   try {
     if (tipoServicio.id > 0) {
       const { data } = await axios({

@@ -1,12 +1,12 @@
 import axios from "axios";
 import { API_URL } from "../App.config";
 
-export async function obtenerClientes(consulta, page, pageSize) {
+export async function obtenerClientesPorPagina(consulta, page, tamañoPagina) {
   const urlBase = API_URL + "/clientesPageQuery";
   try {
     const { data } = await axios({
       method: "GET",
-      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${pageSize}`,
+      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
     return data;
   } catch (error) {
@@ -15,7 +15,7 @@ export async function obtenerClientes(consulta, page, pageSize) {
   }
 }
 
-export async function obtenerClientesForCombo() {
+export async function obtenerClientes() {
   const urlBase = API_URL + "/clientes";
   try {
     const { data } = await axios({
@@ -43,7 +43,7 @@ export async function obtenerCliente(id) {
   }
 }
 
-export async function newCliente(cliente) {
+export async function nuevoCliente(cliente) {
   try {
     if (cliente.id > 0) {
       const { data } = await axios({

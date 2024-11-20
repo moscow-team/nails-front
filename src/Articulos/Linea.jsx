@@ -19,19 +19,17 @@ export default function Linea({ title }) {
 
   const cargarModel = async () => {
     if (id > 0) {
-      console.log(id);
       const resultado = await obtenerLinea(id);
-      console.log(resultado);
       setLinea(resultado);
     }
   };
 
-  const onInputChange = ({ target: { name, value } }) => {
+  const cambiarFormulario = ({ target: { name, value } }) => {
     //spread operator ... (expandir los atributos)
     setLinea({ ...linea, [name]: value });
   };
 
-  const onSubmit = async (e) => {
+  const registrar = async (e) => {
     e.preventDefault();
     newLinea(linea);
     // Redirigimos a la pagina de inicio
@@ -45,7 +43,7 @@ export default function Linea({ title }) {
         <hr></hr>
       </div>
 
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={(e) => registrar(e)}>
         <div className="mb-3">
           <label htmlFor="denominacion" className="form-label">
             {" "}
@@ -58,7 +56,7 @@ export default function Linea({ title }) {
             name="denominacion"
             required={true}
             value={denominacion}
-            onChange={(e) => onInputChange(e)}
+            onChange={(e) => cambiarFormulario(e)}
           />
         </div>
 

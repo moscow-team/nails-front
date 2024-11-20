@@ -10,43 +10,41 @@ import {
 export default function ListadoServicio() {
   const { servicios, setServicios } = useContext(ServicioContext);
   const [consulta, setConsulta] = useState("");
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
-  const [totalPages, setTotalPages] = useState(0);
-  const [sortConfig, setSortConfig] = useState({
+  const [pagina, setPagina] = useState(0);
+  const [tamañoPagina, setTamañoPagina] = useState(ITEMS_PER_PAGE);
+  const [totalPaginas, setTotalPaginas] = useState(0);
+  const [configuracion, setConfiguracion] = useState({
     key: null,
     direction: "ascending",
   });
-  const [loading, setLoading] = useState(false);
+  const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getDatos();
+    obtenerDatos();
+  }, [pagina, tamañoPagina, consulta]);
 
-    console.log("Servicios actualizados:", servicios); // Agrega este log para verificar los datos
-  }, [page, pageSize, consulta]);
-
-  const getDatos = async () => {
-    setLoading(true);
+  const obtenerDatos = async () => {
+    setCargando(true);
     setError(null);
     try {
-      const response = await obtenerServicios(consulta, page, pageSize);
+      const response = await obtenerServicios(consulta, pagina, tamañoPagina);
       setServicios(response.content);
-      setTotalPages(response.totalPages);
+      setTotalPaginas(response.totalPaginas);
     } catch (err) {
       setError("Error fetching items");
     } finally {
-      setLoading(false);
+      setCargando(false);
     }
   };
 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 0 && newPage < totalPages) {
-      setPage(newPage);
+  const cambiarPagina = (newPage) => {
+    if (newPage >= 0 && newPage < totalPaginas) {
+      setPagina(newPage);
     }
   };
 
-  const handleConsultaChange = (e) => {
+  const cambiarConsulta = (e) => {
     setConsulta(e.target.value);
   };
 
@@ -55,7 +53,7 @@ export default function ListadoServicio() {
       try {
         const eliminacionExitosa = await eliminarServicio(id);
         if (eliminacionExitosa) {
-          getDatos();
+          obtenerDatos();
         } else {
           console.error("Error al eliminar servicio");
         }
@@ -65,23 +63,23 @@ export default function ListadoServicio() {
     }
   };
 
-  const handleSort = (key) => {
+  const filtrar = (key) => {
     let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+    if (configuracion.key === key && configuracion.direction === "ascending") {
       direction = "descending";
     }
-    setSortConfig({ key, direction });
+    setConfiguracion({ key, direction });
   };
 
-  const sortedData = () => {
+  const listadoFiltrado = () => {
     const sorted = [...servicios];
-    if (sortConfig.key !== null) {
+    if (configuracion.key !== null) {
       sorted.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
+        if (a[configuracion.key] < b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
+        if (a[configuracion.key] > b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
@@ -105,12 +103,12 @@ export default function ListadoServicio() {
             type="search"
             placeholder="Buscar servicio"
             value={consulta}
-            onChange={handleConsultaChange}
+            onChange={cambiarConsulta}
           />
         </div>
         <div className="col-1">
           <button
-            onClick={() => getDatos()}
+            onClick={() => obtenerDatos()}
             className="btn btn-outline-success"
           >
             Buscar
@@ -119,7 +117,7 @@ export default function ListadoServicio() {
       </div>
       <hr />
 
-      {loading ? (
+      {cargando ? (
         <div className="text-center">Cargando...</div>
       ) : error ? (
         <div className="alert alert-danger">{error}</div>
@@ -128,28 +126,28 @@ export default function ListadoServicio() {
           <table className="table table-striped table-hover align-middle">
             <thead className="table-dark text-center">
               <tr>
-                <th scope="col" onClick={() => handleSort("id")}>
+                <th scope="col" onClick={() => filtrar("id")}>
                   #
-                  {sortConfig.key === "id" && (
+                  {configuracion.key === "id" && (
                     <span>
-                      {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                      {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                     </span>
                   )}
                 </th>
 
-                <th scope="col" onClick={() => handleSort("cliente")}>
+                <th scope="col" onClick={() => filtrar("cliente")}>
                   Cliente
-                  {sortConfig.key === "cliente" && (
+                  {configuracion.key === "cliente" && (
                     <span>
-                      {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                      {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                     </span>
                   )}
                 </th>
-                <th scope="col" onClick={() => handleSort("fecha")}>
+                <th scope="col" onClick={() => filtrar("fecha")}>
                   Fecha
-                  {sortConfig.key === "fecha" && (
+                  {configuracion.key === "fecha" && (
                     <span>
-                      {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                      {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                     </span>
                   )}
                 </th>
@@ -157,7 +155,7 @@ export default function ListadoServicio() {
               </tr>
             </thead>
             <tbody>
-              {sortedData().map((servicio, indice) => (
+              {listadoFiltrado().map((servicio, indice) => (
                 <tr key={indice}>
                   <th scope="row">{servicio.id}</th>
                   <td>{servicio.clienteRazonSocial}</td>
@@ -195,15 +193,15 @@ export default function ListadoServicio() {
           <div className="d-md-flex justify-content-md-end">
             <button
               className="btn btn-outline-primary me-2"
-              disabled={page === 0}
-              onClick={() => handlePageChange(page - 1)}
+              disabled={pagina === 0}
+              onClick={() => cambiarPagina(pagina - 1)}
             >
               Anterior
             </button>
             <button
               className="btn btn-outline-primary"
-              disabled={page >= totalPages - 1}
-              onClick={() => handlePageChange(page + 1)}
+              disabled={pagina >= totalPaginas - 1}
+              onClick={() => cambiarPagina(pagina + 1)}
             >
               Siguiente
             </button>

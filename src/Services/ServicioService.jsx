@@ -4,11 +4,11 @@ import { API_URL } from "../App.config";
 const urlBase = API_URL + "/serviciosPageQuery";
 
 // Obtener una lista paginada de servicios
-export async function obtenerServicios(consulta, page, pageSize) {
+export async function obtenerServicios(consulta, page, tamañoPagina) {
   try {
     const { data } = await axios({
       method: "GET",
-      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${pageSize}`,
+      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
     return data;
   } catch (error) {
@@ -32,7 +32,7 @@ export async function obtenerServicio(id) {
 }
 
 // Crear o actualizar un servicio
-export async function newServicio(servicio) {
+export async function nuevoServicio(servicio) {
   try {
     if (servicio.id > 0) {
       const { data } = await axios({

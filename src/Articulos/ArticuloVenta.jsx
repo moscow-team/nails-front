@@ -4,7 +4,7 @@ import {
   newArticuloVenta,
   obtenerArticuloVenta,
 } from "../Services/ArticuloVentaService";
-import { obtenerLineas2 } from "../Services/LineaService";
+import { obtenerLineas } from "../Services/LineaService";
 
 export default function ArticuloVenta({ title }) {
   let navegacion = useNavigate();
@@ -13,7 +13,7 @@ export default function ArticuloVenta({ title }) {
 
   const [articulo, setArticulo] = useState({
     denominacion: "",
-    linea: 0, 
+    linea: 0,
   });
 
   const [listaLineas, setListaLineas] = useState([]);
@@ -35,18 +35,16 @@ export default function ArticuloVenta({ title }) {
   };
 
   const cargarLineas = async () => {
-    console.log(id);
-
-    const resultado = await obtenerLineas2();
+    const resultado = await obtenerLineas();
     setListaLineas(resultado);
   };
 
-  const onInputChange = ({ target: { name, value } }) => {
+  const cambiarFormulario = ({ target: { name, value } }) => {
     //spread operator ... (expandir los atributos)
     setArticulo({ ...articulo, [name]: value });
   };
 
-  const onSubmit = async (e) => {
+  const registrar = async (e) => {
     e.preventDefault();
 
     const data = {
@@ -66,7 +64,7 @@ export default function ArticuloVenta({ title }) {
         <hr></hr>
       </div>
 
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={(e) => registrar(e)}>
         <div className="mb-3">
           <label htmlFor="denominacion" className="form-label">
             {" "}
@@ -79,7 +77,7 @@ export default function ArticuloVenta({ title }) {
             name="denominacion"
             required={true}
             value={denominacion}
-            onChange={(e) => onInputChange(e)}
+            onChange={(e) => cambiarFormulario(e)}
           />
 
           <label htmlFor="listaLineas">Selecciona una linea:</label>

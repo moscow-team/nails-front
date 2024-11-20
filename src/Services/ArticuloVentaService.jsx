@@ -2,11 +2,11 @@ import axios from "axios";
 import { API_URL } from "../App.config";
 
 const urlBase = API_URL + "/articulosPageQuery";
-export async function obtenerArticulosVenta(consulta, page, pageSize) {
+export async function obtenerArticulosVenta(consulta, page, tamañoPagina) {
   try {
     const { data } = await axios({
       method: "GET",
-      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${pageSize}`,
+      url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
     return data;
   } catch (error) {
@@ -28,7 +28,7 @@ export async function obtenerArticuloVenta(id) {
   }
 }
 
-export async function newArticuloVenta(model) {
+export async function nuevoArticuloVenta(model) {
   try {
     if (model.id > 0) {
       window.alert("entra por el put");
@@ -53,7 +53,7 @@ export async function newArticuloVenta(model) {
   }
 }
 
-export async function eliminarArticulosVenta(id) {
+export async function eliminarArticuloVenta(id) {
   const urlBase = API_URL + "/articulosEliminar";
   try {
     const { data } = await axios({

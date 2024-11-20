@@ -2,40 +2,39 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link,  } from "react-router-dom";
 import { ITEMS_PER_PAGE } from "../App.config";
 import { ClienteContext } from "./ClienteContext";
-import { obtenerClientes, eliminarCliente } from "../Services/ClienteService";
+import { obtenerClientesPorPagina, eliminarCliente } from "../Services/ClienteService";
 
 export default function ListadoCliente() {
   const { clientes, setClientes } = useContext(ClienteContext);
   const [consulta, setConsulta] = useState("");
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);
-  const [totalPages, setTotalPages] = useState(0);
-  const [sortConfig, setSortConfig] = useState({
+  const [pagina, setPagina] = useState(0);
+  const [tamañoPagina, setTamañoPagina] = useState(ITEMS_PER_PAGE);
+  const [totalPaginas, setTotalPaginas] = useState(0);
+  const [configuracion, setConfiguracion] = useState({
     key: null,
     direction: "ascending",
   }); //se utiliza para el orden
 
   useEffect(() => {
-    getDatos();
-  }, [page, pageSize, consulta]);
+    obtenerDatos();
+  }, [pagina, tamañoPagina, consulta]);
 
-  const handlePageChange = (newPage) => {
-    setPage(newPage);
+  const cambiarPagina = (newPage) => {
+    setPagina(newPage);
   };
 
-  const getDatos = async () => {
-    console.log("carga " + page);
-    obtenerClientes(consulta, page, pageSize)
+  const obtenerDatos = async () => {
+    obtenerClientesPorPagina(consulta, pagina, tamañoPagina)
       .then((response) => {
         setClientes(response.content);
-        setTotalPages(response.totalPages);
+        setTotalPaginas(response.totalPaginas);
       })
       .catch((error) => {
         console.error("Error fetching items:", error);
       });
   };
 
-  const handConsultaChange = (e) => {
+  const cambiarConsulta = (e) => {
     setConsulta(e.target.value);
   };
 
@@ -43,7 +42,7 @@ export default function ListadoCliente() {
     try {
       const eliminacionExitosa = await eliminarCliente(id);
       if (eliminacionExitosa) {
-        getDatos();
+        obtenerDatos();
       } else {
         console.error("Error al eliminar el cliente");
       }
@@ -54,23 +53,23 @@ export default function ListadoCliente() {
 
   ///////////////////////////////////////Para el orden de las tablas///////////////////////////////////////////////////
 
-  const handleSort = (key) => {
+  const filtrar = (key) => {
     let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
+    if (configuracion.key === key && configuracion.direction === "ascending") {
       direction = "descending";
     }
-    setSortConfig({ key, direction });
+    setConfiguracion({ key, direction });
   };
 
-  const sortedData = () => {
+  const listadoFiltrado = () => {
     const sorted = [...clientes];
-    if (sortConfig.key !== null) {
+    if (configuracion.key !== null) {
       sorted.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
+        if (a[configuracion.key] < b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? -1 : 1;
         }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
+        if (a[configuracion.key] > b[configuracion.key]) {
+          return configuracion.direction === "ascending" ? 1 : -1;
         }
         return 0;
       });
@@ -95,12 +94,12 @@ export default function ListadoCliente() {
             type="search"
             aria-label="Search"
             value={consulta}
-            onChange={handConsultaChange}
+            onChange={cambiarConsulta}
           ></input>
         </div>
         <div className="col-1">
           <button
-            onClick={() => getDatos()}
+            onClick={() => obtenerDatos()}
             className="btn btn-outline-success"
             type="submit"
           >
@@ -112,35 +111,35 @@ export default function ListadoCliente() {
       <table className="table table-striped table-hover align-middle">
         <thead className="table-dark">
           <tr>
-            <th scope="col" onClick={() => handleSort("id")}>
+            <th scope="col" onClick={() => filtrar("id")}>
               #
-              {sortConfig.key === "id" && (
+              {configuracion.key === "id" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
-            <th scope="col" onClick={() => handleSort("razonSocial")}>
+            <th scope="col" onClick={() => filtrar("razonSocial")}>
               Apellido y Nombre
-              {sortConfig.key === "razonSocial" && (
+              {configuracion.key === "razonSocial" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
-            <th scope="col" onClick={() => handleSort("celular")}>
+            <th scope="col" onClick={() => filtrar("celular")}>
               Telefono
-              {sortConfig.key === "celular" && (
+              {configuracion.key === "celular" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
-            <th scope="col" onClick={() => handleSort("mail")}>
+            <th scope="col" onClick={() => filtrar("mail")}>
               Email
-              {sortConfig.key === "mail" && (
+              {configuracion.key === "mail" && (
                 <span>
-                  {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
+                  {configuracion.direction === "ascending" ? " 🔽" : " 🔼"}
                 </span>
               )}
             </th>
@@ -150,7 +149,7 @@ export default function ListadoCliente() {
         <tbody>
           {
             //iteramos empleados
-            sortedData().map((cliente, indice) => (
+            listadoFiltrado().map((cliente, indice) => (
               <tr key={indice}>
                 <th scope="row">{cliente.id}</th>
                 <td>{cliente.razonSocial}</td>
@@ -197,13 +196,13 @@ export default function ListadoCliente() {
       {/* /////////////////////// Esto se utiliza para hacer la paginacion  ///////////////////////////////// */}
 
       <div className="pagination d-md-flex justify-content-md-end">
-        {Array.from({ length: totalPages }, (_, i) => i).map((pageNumber) => (
+        {Array.from({ length: totalPaginas }, (_, i) => i).map((pageNumber) => (
           <a
             key={pageNumber}
             href="#"
             onClick={(e) => {
               e.preventDefault(); // Previene el comportamiento predeterminado del enlace
-              handlePageChange(pageNumber);
+              cambiarPagina(pageNumber);
             }}
           >
             | {pageNumber} |
