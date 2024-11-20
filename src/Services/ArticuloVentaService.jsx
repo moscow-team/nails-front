@@ -37,6 +37,7 @@ export async function newArticuloVenta(model) {
         url: `${API_URL}/articulos/${model.id}`,
         data: model,
       });
+      return data;
     } else {
       window.alert("entra por el post");
       const { data } = await axios({
@@ -44,8 +45,8 @@ export async function newArticuloVenta(model) {
         url: `${API_URL}/articulos`,
         data: model,
       });
+      return data;
     }
-    return data;
   } catch (error) {
     console.error(error);
     return null;

@@ -1,11 +1,6 @@
 import React, { createContext, useState } from "react";
 
 export const ArticuloVentaContext = createContext();
-import PropTypes from 'prop-types';
-MyComponent.propTypes = {
-  title: PropTypes.string.isRequired,
-};
-
 const ArticuloVentaProvider = ({ children }) => {
   const [articulos, setArticulos] = useState([]);
 

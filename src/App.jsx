@@ -1,6 +1,3 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import ListadoCliente from "./Configuracion/ListadoCliente";
@@ -19,6 +16,7 @@ import ArticuloVentaProvider from "./Articulos/ArticuloVentaContext";
 import ServicioProvider from "./GServicios/ServicioContext";
 import Servicio from "./GServicios/Servicio";
 import ListadoServicio from "./GServicios/ListadoServicio";
+import React from "react";
 
 function App() {
   return (

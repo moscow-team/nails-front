@@ -4,11 +4,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { newServicio, obtenerServicio } from "../Services/ServicioService";
 import { obtenerClientesForCombo } from "../Services/ClienteService";
 import { obtenerTiposServiciosForCombo } from "../Services/TipoServicioService";
+import { FormetearPrecio } from "../utils/FormateadorDePrecio";
 import PropTypes from 'prop-types';
-MyComponent.propTypes = {
+Servicio.propTypes = {
   title: PropTypes.string.isRequired,
 };
-
 export default function Servicio({ title }) {
   let navegacion = useNavigate();
   const { id } = useParams();
@@ -19,6 +19,7 @@ export default function Servicio({ title }) {
 
   const [listaClientes, setListaClientes] = useState([]);
   const [selectedCliente, setSelectedCliente] = useState("");
+  //TODO: VERIFICAR EL FORMATO DE LA FECHA
   const [fecha, setFecha] = useState(new Date().toISOString().split("T")[0]);
   const [tiposServicio, setTiposServicio] = useState([]);
   const [servicios, setServicios] = useState([]);
@@ -86,12 +87,12 @@ export default function Servicio({ title }) {
     setServicios(newServicios);
   };
 
-  const handleServicioChangeBoorar = (index, event) => {
-    const { name, value } = event.target;
-    const newServicios = [...servicios];
-    newServicios[index] = { ...newServicios[index], [name]: value };
-    setServicios(newServicios);
-  };
+  // const handleServicioChangeBoorar = (index, event) => {
+  //   const { name, value } = event.target;
+  //   const newServicios = [...servicios];
+  //   newServicios[index] = { ...newServicios[index], [name]: value };
+  //   setServicios(newServicios);
+  // };
 
   const handleServicioChange = (index, event) => {
     const { name, value } = event.target;
@@ -252,7 +253,8 @@ export default function Servicio({ title }) {
             <input
               type="number"
               name="precio"
-              value={servicio.precio}
+              // value={servicio.precio}
+              value={FormetearPrecio(servicio.precio)} // Formateas el precio
               onChange={(e) => handleServicioChange(index, e)}
             />
             {errores.servicios[index]?.precio && (

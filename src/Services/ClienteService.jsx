@@ -51,14 +51,15 @@ export async function newCliente(cliente) {
         url: `${API_URL}/cliente/${cliente.id}`,
         data: cliente,
       });
+      return data;
     } else {
       const { data } = await axios({
         method: "POST",
         url: `${API_URL}/cliente`,
         data: cliente,
       });
+      return data;
     }
-    return data;
   } catch (error) {
     console.error(error);
     return null;

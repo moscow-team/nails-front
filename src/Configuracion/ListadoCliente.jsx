@@ -129,7 +129,7 @@ export default function ListadoCliente() {
               )}
             </th>
             <th scope="col" onClick={() => handleSort("celular")}>
-              Cel
+              Telefono
               {sortConfig.key === "celular" && (
                 <span>
                   {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}
@@ -137,7 +137,7 @@ export default function ListadoCliente() {
               )}
             </th>
             <th scope="col" onClick={() => handleSort("mail")}>
-              Mail
+              Email
               {sortConfig.key === "mail" && (
                 <span>
                   {sortConfig.direction === "ascending" ? " 🔽" : " 🔼"}

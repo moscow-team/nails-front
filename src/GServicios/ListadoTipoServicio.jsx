@@ -10,7 +10,6 @@ import {
 
 export default function ListadoTipoServicio() {
   const { tiposServicios, setTiposServicios } = useContext(TipoServicioContext);
-
   const [consulta, setConsulta] = useState("");
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(ITEMS_PER_PAGE);

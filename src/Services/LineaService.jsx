@@ -49,15 +49,17 @@ export async function newLinea(linea) {
         url: `${API_URL}/linea/${linea.id}`,
         data: linea,
       });
+      return data;
+
     } else {
       const { data } = await axios({
         method: "POST",
         url: `${API_URL}/linea`,
         data: linea,
       });
-    }
+      return data;
 
-    return data;
+    }
   } catch (error) {
     console.error(error);
     return null;

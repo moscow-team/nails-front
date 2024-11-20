@@ -92,7 +92,7 @@ export default function ListadoServicio() {
   return (
     <div className="container">
       <div>
-        <h1>Gestión de servicios</h1>
+        <h1>Gestión de Servicios</h1>
         <hr />
       </div>
 
@@ -117,7 +117,6 @@ export default function ListadoServicio() {
           </button>
         </div>
       </div>
-
       <hr />
 
       {loading ? (
@@ -161,7 +160,6 @@ export default function ListadoServicio() {
               {sortedData().map((servicio, indice) => (
                 <tr key={indice}>
                   <th scope="row">{servicio.id}</th>
-
                   <td>{servicio.clienteRazonSocial}</td>
                   <td>{servicio.fechaDocumento}</td>
                   <td className="text-center">

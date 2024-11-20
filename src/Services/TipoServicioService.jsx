@@ -50,15 +50,15 @@ export async function newTipoServicio(tipoServicio) {
         url: `${API_URL}/tipoServicios/${tipoServicio.id}`,
         data: tipoServicio,
       });
+      return data;
     } else {
       const { data } = await axios({
         method: "POST",
         url: `${API_URL}/tiposServicios`,
         data: tipoServicio,
       });
+      return data;
     }
-
-    return data;
   } catch (error) {
      console.error(error);
     // if (e.response && e.response.status === 400) {

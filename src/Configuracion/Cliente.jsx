@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { obtenerCliente } from "../Services/ClienteService";
 import PropTypes from 'prop-types';
-MyComponent.propTypes = {
+Cliente.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
@@ -79,7 +79,7 @@ export default function Cliente({ title }) {
         <div className="mb-3">
           <label htmlFor="celular" className="form-label">
             {" "}
-            celular
+            Celular
           </label>
           <input
             type="number"
@@ -95,7 +95,7 @@ export default function Cliente({ title }) {
         <div className="mb-3">
           <label htmlFor="mail" className="form-label">
             {" "}
-            mail
+            Email
           </label>
           <input
             type="email"
