@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../App.config";
+import { API_URL } from "../app.config.js";
 
 export async function obtenerTiposServiciosPorPagina(consulta, page, tamañoPagina) {
   try {
@@ -47,7 +47,7 @@ export async function nuevoTipoServicio(tipoServicio) {
     if (tipoServicio.id > 0) {
       const { data } = await axios({
         method: "PUT",
-        url: `${API_URL}/tipoServicios/${tipoServicio.id}`,
+        url: `${API_URL}/tiposServicios/${tipoServicio.id}`,
         data: tipoServicio,
       });
       return data;
@@ -78,7 +78,7 @@ export async function eliminarTipoServicio(id) {
   const urlBase = API_URL + "/tipoServicioEliminar";
   try {
     const { data } = await axios({
-      method: "PUT",
+      method: "DELETE",
       url: `${urlBase}/${id}`,
     });
     return true;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { newLinea, obtenerLinea } from "../Services/LineaService";
+import { nuevaLinea, obtenerLinea } from "../Services/LineaService";
 
 export default function Linea({ title }) {
   let navegacion = useNavigate();
@@ -31,7 +31,7 @@ export default function Linea({ title }) {
 
   const registrar = async (e) => {
     e.preventDefault();
-    newLinea(linea);
+    nuevaLinea(linea);
     // Redirigimos a la pagina de inicio
     navegacion("/lineaList");
   };

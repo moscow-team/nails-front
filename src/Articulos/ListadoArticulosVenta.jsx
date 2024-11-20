@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
-import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../App.config";
+import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../app.config.js";
 import { Link } from "react-router-dom";
 
 import {
   obtenerArticulosVenta,
-  eliminarArticulosVenta,
+  eliminarArticuloVenta,
 } from "../Services/ArticuloVentaService";
 import { ArticuloVentaContext } from "./ArticuloVentaContext";
 
@@ -46,8 +46,9 @@ export default function ListadoArticulosVenta() {
   };
 
   const eliminar = async (id) => {
+    console.log("Eliminar", id);
     try {
-      const eliminacionExitosa = await eliminarArticulosVenta(id);
+      const eliminacionExitosa = await eliminarArticuloVenta(id);
       if (eliminacionExitosa) {
         obtenerDatos();
       } else {

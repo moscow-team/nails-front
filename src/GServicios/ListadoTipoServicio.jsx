@@ -1,11 +1,11 @@
 
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../App.config";
+import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../app.config.js";
 import { TipoServicioContext } from "./TipoServicioContext";
 import {
-  obtenerTiposServicios,
   eliminarTipoServicio,
+  obtenerTiposServiciosPorPagina,
 } from "../Services/TipoServicioService";
 
 export default function ListadoTipoServicio() {
@@ -28,10 +28,10 @@ export default function ListadoTipoServicio() {
   };
 
   const obtenerDatos = async () => {
-    obtenerTiposServicios(consulta, pagina, tamañoPagina)
+    obtenerTiposServiciosPorPagina(consulta, pagina, tamañoPagina)
       .then((response) => {
         setTiposServicios(response.content);
-        totalPaginas(response.totalPaginas);
+        totalPaginas(response.totalPages);
       })
       .catch((error) => {
         console.error("Error fetching items:", error);

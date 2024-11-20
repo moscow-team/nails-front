@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  newArticuloVenta,
+  nuevoArticuloVenta,
   obtenerArticuloVenta,
 } from "../Services/ArticuloVentaService";
 import { obtenerLineas } from "../Services/LineaService";
@@ -51,8 +51,7 @@ export default function ArticuloVenta({ title }) {
       ...articulo,
       linea: selectedLinea, // Asumiendo que la línea seleccionada es el id de la línea
     };
-    window.alert("id lina" + selectedLinea);
-    newArticuloVenta(data);
+    nuevoArticuloVenta(data);
     // Redirigimos a la pagina de inicio
     navegacion("/articuloList");
   };

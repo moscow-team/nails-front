@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../App.config";
+import { API_URL } from "../app.config.js";
 
 export async function obtenerLineasPorPagina(consulta, page, tamañoPagina) {
   const urlBase = API_URL + "/lineasPageQuery";
@@ -70,7 +70,7 @@ export async function eliminarLineas(id) {
   const urlBase = API_URL + "/lineaEliminar";
   try {
     const { data } = await axios({
-      method: "PUT",
+      method: "DELETE",
       url: `${urlBase}/${id}`,
     });
     return true;

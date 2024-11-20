@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { obtenerCliente } from "../Services/ClienteService";
+import { nuevoCliente, obtenerCliente } from "../Services/ClienteService";
 import PropTypes from 'prop-types';
 Cliente.propTypes = {
   title: PropTypes.string.isRequired,
@@ -26,11 +26,8 @@ export default function Cliente({ title }) {
   }, []);
 
   const cargarCliente = async () => {
-    console.log(id);
     if (id > 0) {
-      console.log(id);
       const resultado = await obtenerCliente(id);
-      console.log(resultado);
       setCliente(resultado);
     }
   };
@@ -42,12 +39,14 @@ export default function Cliente({ title }) {
 
   const registrar = async (e) => {
     e.preventDefault();
-    const urlBase = "http://localhost:8080/nails/clientes";
-    if (id > 0) {
-      await axios.put(`${urlBase}/${id}`, cliente);
-    } else {
-      await axios.post(urlBase, cliente);
-    }
+    nuevoCliente(cliente);
+    // const urlBase = "http://localhost:8080/clientes";
+    // if (id > 0 ) {
+    //   await axios.put(`${urlBase}/${id}`, cliente);
+    // } else {
+    //   const respo = await axios.post(urlBase, cliente);
+    //   console.log(respo);
+    // }
     // Redirigimos a la pagina de inicio
     navegacion("/clienteList");
   };

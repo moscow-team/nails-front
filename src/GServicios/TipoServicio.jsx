@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
-  newTipoServicio,
+  nuevoTipoServicio,
   obtenerTipoServicio,
 } from "../Services/TipoServicioService";
 
@@ -35,7 +35,7 @@ export default function TipoServicio({ title }) {
 
   const registrar = async (e) => {
     e.preventDefault();
-    newTipoServicio(tipoServicio);
+    nuevoTipoServicio(tipoServicio);
     // Redirigimos a la pagina de inicio
     navegacion("/tipoServicioList");
   };

@@ -1,3 +1,3 @@
 export function FormetearPrecio(precio){
-    return `$${precio.toLocaleString("es")}`;
+    return `$${precio.toLocaleString("en")}`;
 }

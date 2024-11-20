@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../App.config";
+import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../app.config.js";
 import { ServicioContext } from "./ServicioContext";
 import {
   eliminarServicio,
   obtenerServicios,
 } from "../Services/ServicioService";
+import { FormatearFecha } from "../utils/FormateadorDeFecha";
 
 export default function ListadoServicio() {
   const { servicios, setServicios } = useContext(ServicioContext);
@@ -30,10 +31,10 @@ export default function ListadoServicio() {
     try {
       const response = await obtenerServicios(consulta, pagina, tamañoPagina);
       setServicios(response.content);
-      setTotalPaginas(response.totalPaginas);
+      setTotalPaginas(response.totalPages);
+      setCargando(false);
     } catch (err) {
-      setError("Error fetching items");
-    } finally {
+      console.error("Error fetching items:", err);
       setCargando(false);
     }
   };
@@ -159,11 +160,11 @@ export default function ListadoServicio() {
                 <tr key={indice}>
                   <th scope="row">{servicio.id}</th>
                   <td>{servicio.clienteRazonSocial}</td>
-                  <td>{servicio.fechaDocumento}</td>
+                  <td>{FormatearFecha(servicio.fechaDocumento)}</td>
                   <td className="text-center">
                     <div>
-                      <Link
-                        to={`/servicio/${servicio.id}`}
+                      <button
+                        onClick={() => alert("No se puede editar el servicio")}
                         className="btn btn-link btn-sm me-3"
                       >
                         <img
@@ -171,7 +172,7 @@ export default function ListadoServicio() {
                           style={{ width: "20px", height: "20px" }}
                         />
                         Editar
-                      </Link>
+                      </button>
                       <button
                         onClick={() => eliminar(servicio.id)}
                         className="btn btn-link btn-sm me-3"

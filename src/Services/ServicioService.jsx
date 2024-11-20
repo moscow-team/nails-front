@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../App.config";
+import { API_URL } from "../app.config.js";
 
 const urlBase = API_URL + "/serviciosPageQuery";
 
@@ -10,6 +10,7 @@ export async function obtenerServicios(consulta, page, tamañoPagina) {
       method: "GET",
       url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error buscando servicios:", error);

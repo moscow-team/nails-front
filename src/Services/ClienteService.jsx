@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../App.config";
+import { API_URL } from "../app.config.js";
 
 export async function obtenerClientesPorPagina(consulta, page, tamañoPagina) {
   const urlBase = API_URL + "/clientesPageQuery";
@@ -8,6 +8,7 @@ export async function obtenerClientesPorPagina(consulta, page, tamañoPagina) {
       method: "GET",
       url: `${urlBase}?consulta=${consulta}&page=${page}&size=${tamañoPagina}`,
     });
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error buscando clientes:", error);
@@ -35,7 +36,6 @@ export async function obtenerCliente(id) {
       method: "GET",
       url: `${API_URL}/cliente/${id}`,
     });
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error en buscar un cliente:", error);

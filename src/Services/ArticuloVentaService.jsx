@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_URL } from "../App.config";
+import { API_URL } from "../app.config.js";
 
 const urlBase = API_URL + "/articulosPageQuery";
 export async function obtenerArticulosVenta(consulta, page, tamañoPagina) {
@@ -31,7 +31,6 @@ export async function obtenerArticuloVenta(id) {
 export async function nuevoArticuloVenta(model) {
   try {
     if (model.id > 0) {
-      window.alert("entra por el put");
       const { data } = await axios({
         method: "PUT",
         url: `${API_URL}/articulos/${model.id}`,
@@ -39,7 +38,6 @@ export async function nuevoArticuloVenta(model) {
       });
       return data;
     } else {
-      window.alert("entra por el post");
       const { data } = await axios({
         method: "POST",
         url: `${API_URL}/articulos`,
@@ -54,10 +52,10 @@ export async function nuevoArticuloVenta(model) {
 }
 
 export async function eliminarArticuloVenta(id) {
-  const urlBase = API_URL + "/articulosEliminar";
+  const urlBase = API_URL + "/articuloEliminar";
   try {
     const { data } = await axios({
-      method: "PUT",
+      method: "DELETE",
       url: `${urlBase}/${id}`,
     });
     return true;

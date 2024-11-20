@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../App.config";
+import { IMAGEN_EDIT, IMAGEN_DELETE, ITEMS_PER_PAGE } from "../app.config.js";
 import { LineaContext } from "./LineaContext";
-import { obtenerLineas, eliminarLineas } from "../Services/LineaService";
+import { eliminarLineas, obtenerLineasPorPagina } from "../Services/LineaService";
 
 export default function ListadoLinea() {
   const { lineas, setLineas } = useContext(LineaContext);
@@ -24,11 +24,10 @@ export default function ListadoLinea() {
   };
 
   const obtenerDatos = async () => {
-    console.log("carga " + pagina);
-    obtenerLineas(consulta, pagina, tamañoPagina)
+    obtenerLineasPorPagina(consulta, pagina, tamañoPagina)
       .then((response) => {
         setLineas(response.content);
-        setTotalPaginas(response.totalPaginas);
+        setTotalPaginas(response.totalPages);
       })
       .catch((error) => {
         console.error("Error fetching items:", error);

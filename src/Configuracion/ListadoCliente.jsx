@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link,  } from "react-router-dom";
-import { ITEMS_PER_PAGE } from "../App.config";
+import { ITEMS_PER_PAGE } from "../app.config";
 import { ClienteContext } from "./ClienteContext";
 import { obtenerClientesPorPagina, eliminarCliente } from "../Services/ClienteService";
 
@@ -27,7 +27,7 @@ export default function ListadoCliente() {
     obtenerClientesPorPagina(consulta, pagina, tamañoPagina)
       .then((response) => {
         setClientes(response.content);
-        setTotalPaginas(response.totalPaginas);
+        setTotalPaginas(response.totalPages);
       })
       .catch((error) => {
         console.error("Error fetching items:", error);
