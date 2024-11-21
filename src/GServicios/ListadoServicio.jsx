@@ -7,6 +7,7 @@ import {
   obtenerServicios,
 } from "../Services/ServicioService";
 import { FormatearFecha } from "../utils/FormateadorDeFecha";
+import { FormetearPrecio } from "../utils/FormateadorDePrecio.js";
 
 export default function ListadoServicio() {
   const { servicios, setServicios } = useContext(ServicioContext);
@@ -155,6 +156,7 @@ export default function ListadoServicio() {
                     </span>
                   )}
                 </th>
+                <th scope="col">Total</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
@@ -164,6 +166,7 @@ export default function ListadoServicio() {
                   <th scope="row">{servicio.id}</th>
                   <td>{servicio.clienteRazonSocial}</td>
                   <td>{FormatearFecha(servicio.fechaDocumento)}</td>
+                  <td>{FormetearPrecio(servicio.total)}</td>
                   <td className="text-center">
                     <div>
                       <button
